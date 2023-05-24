@@ -1,38 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ReactPlayer from 'react-player'
+import React, { useState } from 'react';
+import { Tab, Tabs } from '@mui/material';
+import VideoItem from './VideoItem';
+
+const pagesMap = [
+  {
+    label: "Following",
+    value: "following_list",
+  },
+  {
+    label: "For You",
+    value: "for_you_list",
+  },
+];
 
 const VideoList = () => {
-  const [videos, setVideos] = useState([]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef(null);
+  const [pages, setPages] = useState(pagesMap[1].value);
 
-  useEffect(() => {
-    getVideos();
-  }, []);
-
-  async function getVideos() {
-    const response = await fetch('http://localhost:3030/following_list');
-    const data = await response.json();
-
-    setVideos(data.items);
+  function handleChange(ev, value) {
+    setPages(value);
   }
 
   return (
-    <div className="">
-      <ReactPlayer
-        url='http://localhost:3030/media/Audi_A4_S4.m3u8'
-        width="100%"
-        loop
-        controls
-        muted
-        playing
-        config={{
-          file: {
-            forceHLS: true,
-          }
-        }}
-      />
-    </div>
+    <>
+      {/* Tabs */}
+      <Tabs
+        value={pages}
+        variant="fullWidth"
+        onChange={handleChange}
+      >
+        {pagesMap.map(({ label, value }) => (
+          <Tab
+            key={value}
+            label={label}
+            value={value}
+          />
+        ))}
+      </Tabs>
+
+      {/* Content */}
+      <VideoItem pages={pages} />
+    </>
   );
 };
 
