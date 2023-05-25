@@ -1,4 +1,105 @@
-.app {
+:root {
+  --range: #fff 100;
+  --bar: linear-gradient(
+    90deg,
+    rgba(238, 29, 82, 1) 0%,
+    rgba(255, 255, 255, 1) 34%,
+    rgba(105, 201, 208, 1) 65%
+  );
+  --primary: #fff;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  background-color: #0d0d0d;
+  height: 896px;
+  width: 414px;
+  min-width: 414px;
+  overflow: hidden;
+  position: relative;
+}
+
+.video-box {
   height: 100vh;
-  max-width: 414px;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.video-box > div {
+  height: 100%;
+  scroll-snap-align: start;
+}
+
+.video-box > div > .video {
+  height: 78% !important;
+}
+
+.video-box > div > .video > video {
+  object-fit: fill;
+}
+
+.video-box > div > span {
+  color: var(--primary);
+}
+
+.top {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
+.bottom {
+  background-color: #e3e3e3;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.top button,
+.bottom button {
+  color: var(--primary);
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  border: 0;
+  width: 100%;
+  background-color: #0f0f0f 8a;
+}
+
+.explain {
+  position: absolute;
+  width: calc(100% - 40px);
+  padding: 10px;
+  border-radius: 6px;
+  bottom: 60px;
+  color: var(--primary);
+}
+
+.explain-video-bar {
+  height: 4px;
+  border-radius: 100px;
+  width: 100%;
+  background-color: var(--range);
+  margin: 4px 0;
+}
+
+.explain-video-bar-w {
+  height: 100%;
+  background: var(--bar);
+  border-radius: 100px;
 }

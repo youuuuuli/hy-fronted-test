@@ -4,12 +4,14 @@ import ReactPlayer from 'react-player';
 const VideoItem = (props) => {
   const { pages = '' } = props;
   const [videos, setVideos] = useState([]);
-  // const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (!!pages) {
-      getVideos();
+    if (!pages) {
+      return;
     }
+
+    getVideos();
   }, [pages]);
 
   async function getVideos() {
@@ -19,15 +21,30 @@ const VideoItem = (props) => {
     setVideos(data.items);
   }
 
+  function handleProgress(state) {
+    // console.log(state);
+    setProgress(state.played);
+  }
+
   return (
-    <>
+    <div className="video-box">
       {videos.map((video, i) => (
         <div key={i}>
+          <div className="explain">
+            <div className="explain-video-bar">
+              <div
+                className="explain-video-bar-w"
+                style={{ width: `${progress * 100}%` }}
+              />
+            </div>
+          </div>
+
           <ReactPlayer
+            className="video"
             url={video.play_url}
             width="100%"
             loop
-            controls
+            // controls
             muted
             playing
             config={{
@@ -35,10 +52,13 @@ const VideoItem = (props) => {
                 forceHLS: true,
               }
             }}
+            onProgress={handleProgress}
           />
+
+          <span>{video.title}</span>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

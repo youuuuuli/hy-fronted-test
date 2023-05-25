@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Tab, Tabs } from '@mui/material';
+import { Home, Search } from '@mui/icons-material';
 import VideoItem from './VideoItem';
 
-const pagesMap = [
+const topMap = [
   {
     label: "Following",
     value: "following_list",
@@ -13,22 +14,45 @@ const pagesMap = [
   },
 ];
 
-const VideoList = () => {
-  const [pages, setPages] = useState(pagesMap[1].value);
+const bottomMap = [
+  {
+    icon: <Home />,
+    label: "Home",
+    value: "home",
+  },
+  {
+    icon: <Search />,
+    label: "Discover",
+    value: "discover",
+  },
+];
 
-  function handleChange(ev, value) {
-    setPages(value);
+const VideoList = () => {
+  const [top, setTop] = useState(topMap[1].value);
+  const [bottom, setBottom] = useState(bottomMap[0].value);
+
+  function handleTopChange(ev, value) {
+    setTop(value);
+  }
+
+  function handleBottomChange(ev, value) {
+    setBottom(value);
   }
 
   return (
-    <>
-      {/* Tabs */}
+    <div className="container">
+      <div className="overlay">
+        <VideoItem pages={top} />
+      </div>
+
       <Tabs
-        value={pages}
+        centered
+        className="top"
+        value={top}
         variant="fullWidth"
-        onChange={handleChange}
+        onChange={handleTopChange}
       >
-        {pagesMap.map(({ label, value }) => (
+        {topMap.map(({ label, value }) => (
           <Tab
             key={value}
             label={label}
@@ -37,9 +61,23 @@ const VideoList = () => {
         ))}
       </Tabs>
 
-      {/* Content */}
-      <VideoItem pages={pages} />
-    </>
+      <Tabs
+        centered
+        className="bottom"
+        value={bottom}
+        variant="fullWidth"
+        onChange={handleBottomChange}
+      >
+        {bottomMap.map(({ icon, label, value }) => (
+          <Tab
+            icon={icon}
+            key={value}
+            label={label}
+            value={value}
+          />
+        ))}
+      </Tabs>
+    </div>
   );
 };
 
