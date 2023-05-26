@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { Home, Search } from '@mui/icons-material';
 import VideoItem from './VideoItem';
@@ -30,6 +30,15 @@ const bottomMap = [
 const VideoList = () => {
   const [top, setTop] = useState(topMap[1].value);
   const [bottom, setBottom] = useState(bottomMap[0].value);
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    if (!top) {
+      return;
+    }
+
+    getVideos();
+  }, [top]);
 
   function handleTopChange(ev, value) {
     setTop(value);
@@ -39,10 +48,24 @@ const VideoList = () => {
     setBottom(value);
   }
 
+  async function getVideos() {
+    const response = await fetch(`http://localhost:3030/${top}`);
+    const data = await response.json();
+
+    setVideos(data.items);
+  }
+
   return (
     <div className="container">
       <div className="overlay">
-        <VideoItem pages={top} />
+        <div className="video-box">
+          {videos.map((video, i) => (
+            <VideoItem
+              key={i}
+              video={video}
+            />
+          ))}
+        </div>
       </div>
 
       <Tabs
